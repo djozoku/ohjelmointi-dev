@@ -1,0 +1,10 @@
+tietokanta:
+-references
+-languages
+-libraries
+-frameworks
+-testing
+-environments
+-users
+-sessions
+-pending

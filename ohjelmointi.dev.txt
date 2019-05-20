@@ -1,0 +1,29 @@
+current idea of toolset for ohjelmointi.dev:
+
+firebase for login, storage, database & hosting (might switch this out for passport & typeorm, but what about blob storage & hosting?)
+next.js for serverside rendering a react application
+apollo for fast and customizeable data fetching
+git for version management
+gitlab/github for storing project across computers
+react for easy to manage single page web application
+material ui for good design language
+typescript as programming language
+markdown for easy cms
+draftjs for text editing in browser
+react-markdown for markdown conversion to react components
+eslint + prettier for code formatting & linting
+jest + enzyme for testing
+vscode for code editor
+heroku for pipelines/testing deployment
+commetizen for clean commit messages
+
+workflow:
+create new branch for current changes
+make changes
+push to github
+run heroku pipeline
+if ok merge to master
+host at firebase
+
+system:
+nextjs > material ui > clientside react > firebase auth > custom cms > draftjs > custom markdown converter > apollo > typegraphql > firebase firestore > apollo > react-markdown > content
