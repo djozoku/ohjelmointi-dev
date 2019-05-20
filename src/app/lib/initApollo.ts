@@ -1,7 +1,9 @@
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
+import { SchemaLink } from 'apollo-link-schema';
 import fetch from 'isomorphic-unfetch';
+import { schema } from '../../shared/schema';
 import { isBrowser } from './isBrowser';
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
@@ -12,14 +14,15 @@ if (!isBrowser) {
 }
 
 function create(initialState): ApolloClient<NormalizedCacheObject> {
-  // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
   return new ApolloClient({
     cache: new InMemoryCache().restore(initialState),
     connectToDevTools: isBrowser,
-    link: new HttpLink({
-      credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
-      uri: 'https://api.graph.cool/simple/v1/cixmkt2ul01q00122mksg82pn', // Server URL (must be absolute)
-    }),
+    link: isBrowser
+      ? new HttpLink({
+          credentials: 'same-origin',
+          uri: 'http://localhost:5000/graphql',
+        })
+      : new SchemaLink({ schema }),
     ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
   });
 }

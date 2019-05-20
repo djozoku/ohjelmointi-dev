@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
-    "lib": ["es2017", "dom"],
+    "lib": ["es2017", "dom", "esnext.asynciterable", "es2016"],
     "module": "commonjs",
     "strict": true,
     "outDir": "../../dist/functions",
     "sourceMap": true,
     "target": "es2017",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "baseUrl": "./"
   },
   "compileOnSave": true

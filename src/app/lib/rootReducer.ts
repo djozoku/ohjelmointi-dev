@@ -21,7 +21,7 @@ const mainReducer = (state = initialState, action: Action) => {
     case 'OWO':
       return {
         ...state,
-        text: 'OwO',
+        text: action.payload.data,
       };
     default:
       return {

@@ -11,12 +11,25 @@ const bindMiddleware = (middleware) => {
   return applyMiddleware(...middleware);
 };
 
+function service() {
+  return {
+    hello() {
+      return 'hello';
+    },
+  };
+}
+
 function configureStore(initialState) {
-  const sagaMiddleware = createSagaMiddleware();
-  const store = createStore(rootReducer, initialState, bindMiddleware([sagaMiddleware]));
+  const sagaMiddleware = createSagaMiddleware({ context: { service } });
+  const store = createStore(
+    rootReducer,
+    initialState,
+    bindMiddleware([sagaMiddleware]),
+  );
 
   // @ts-ignore
   store.sagaTask = sagaMiddleware.run(rootSaga);
+  store.dispatch({ type: 'HI' });
 
   return store;
 }
