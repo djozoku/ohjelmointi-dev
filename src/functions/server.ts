@@ -1,8 +1,8 @@
 import { ApolloServer } from 'apollo-server-express';
-import * as express from 'express';
-import * as admin from 'firebase-admin';
+import express from 'express';
+import admin from 'firebase-admin';
 import { IncomingMessage, ServerResponse } from 'http';
-import * as next from 'next';
+import next from 'next';
 import { schema } from '../shared/schema';
 
 export async function createServer(

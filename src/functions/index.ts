@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
-import { accountCredential } from './credentials/server';
+import { accountCredential } from '../shared/credentials/server';
 import * as Application from './server';
 
 const firebase = admin.initializeApp({
