@@ -1,8 +1,7 @@
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import createSagaMiddleware from 'redux-saga';
+import thunkMiddleware from 'redux-thunk';
 import rootReducer from './rootReducer';
-import rootSaga from './rootSaga';
 
 const bindMiddleware = (middleware) => {
   if (process.env.NODE_ENV !== 'production') {
@@ -20,16 +19,11 @@ function service() {
 }
 
 function configureStore(initialState) {
-  const sagaMiddleware = createSagaMiddleware({ context: { service } });
   const store = createStore(
     rootReducer,
     initialState,
-    bindMiddleware([sagaMiddleware]),
+    bindMiddleware([thunkMiddleware.withExtraArgument(apollo)]),
   );
-
-  // @ts-ignore
-  store.sagaTask = sagaMiddleware.run(rootSaga);
-  store.dispatch({ type: 'HI' });
 
   return store;
 }
