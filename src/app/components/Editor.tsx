@@ -107,7 +107,7 @@ class EditorComponent extends React.Component<{}, EditorComponentState> {
         },
         windowWidth: relative.width,
       },
-      () => this.showToolbar()
+      () => this.showToolbar(),
     );
   };
 
@@ -117,7 +117,7 @@ class EditorComponent extends React.Component<{}, EditorComponentState> {
       {
         showToolbar: true,
       },
-      () => this.measureToolbar()
+      () => this.measureToolbar(),
     );
   };
 
@@ -131,19 +131,26 @@ class EditorComponent extends React.Component<{}, EditorComponentState> {
           w: this.elemWidth,
         },
       },
-      () => this.setToolbarXY()
+      () => this.setToolbarXY(),
     );
   };
 
   // 5- Now that we have all measures, define toolbar coordinates
   public setToolbarXY = () => {
-    const { selectionMeasures, selectionCoordinates, toolbarMeasures, windowWidth } = this.state;
+    const {
+      selectionMeasures,
+      selectionCoordinates,
+      toolbarMeasures,
+      windowWidth,
+    } = this.state;
 
     const hiddenTop = selectionCoordinates.y < toolbarMeasures.h;
-    const hiddenRight = windowWidth - selectionCoordinates.x < toolbarMeasures.w / 2;
+    const hiddenRight =
+      windowWidth - selectionCoordinates.x < toolbarMeasures.w / 2;
     const hiddenLeft = selectionCoordinates.x < toolbarMeasures.w / 2;
 
-    const normalX = selectionCoordinates.x - toolbarMeasures.w / 2 + selectionMeasures.w / 2;
+    const normalX =
+      selectionCoordinates.x - toolbarMeasures.w / 2 + selectionMeasures.w / 2;
     const normalY = selectionCoordinates.y - toolbarMeasures.h;
 
     const invertedY = selectionCoordinates.y + selectionMeasures.h;
@@ -172,7 +179,10 @@ class EditorComponent extends React.Component<{}, EditorComponentState> {
     });
   };
 
-  public handleKeyCommand = (command: string, editorState: EditorState): DraftHandleValue => {
+  public handleKeyCommand = (
+    command: string,
+    editorState: EditorState,
+  ): DraftHandleValue => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
       this.onChange(newState);
@@ -185,7 +195,9 @@ class EditorComponent extends React.Component<{}, EditorComponentState> {
   };
 
   public toggleToolbar = (inlineStyle: string) => {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle));
+    this.onChange(
+      RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle),
+    );
   };
 
   public render() {
@@ -232,9 +244,12 @@ class EditorComponent extends React.Component<{}, EditorComponentState> {
           />
         </div>
         <div style={{ marginTop: 40 }}>
-          <button onClick={this.toggleRawData}>{!this.state.showRawData ? 'Show' : 'Hide'} Raw Data</button>
+          <button onClick={this.toggleRawData}>
+            {!this.state.showRawData ? 'Show' : 'Hide'} Raw Data
+          </button>
           <br />
-          {this.state.showRawData && JSON.stringify(convertToRaw(editorState.getCurrentContent()))}
+          {this.state.showRawData &&
+            JSON.stringify(convertToRaw(editorState.getCurrentContent()))}
         </div>
       </div>
     );
@@ -279,7 +294,10 @@ const initialData: RawDraftContentState = {
       data: {},
       depth: 0,
       entityRanges: [],
-      inlineStyleRanges: [{ offset: 0, length: 14, style: 'BOLD' }, { offset: 133, length: 9, style: 'BOLD' }],
+      inlineStyleRanges: [
+        { offset: 0, length: 14, style: 'BOLD' },
+        { offset: 133, length: 9, style: 'BOLD' },
+      ],
       key: 'ecmnc',
       text:
         'Luke Skywalker has vanished. In his absence, the sinister FIRST ORDER has risen from the ashes of the Empire and will not rest until Skywalker, the last Jedi, has been destroyed.',

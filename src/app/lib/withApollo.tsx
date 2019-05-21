@@ -13,7 +13,9 @@ function getComponentDisplayName(Component) {
 
 export default (ComposedComponent) => {
   return class WithApollo extends React.Component {
-    public static displayName = `WithApollo(${getComponentDisplayName(ComposedComponent)})`;
+    public static displayName = `WithApollo(${getComponentDisplayName(
+      ComposedComponent,
+    )})`;
 
     public static async getInitialProps(ctx) {
       // Initial serverState with apollo (empty)
@@ -46,7 +48,7 @@ export default (ComposedComponent) => {
                 pathname: ctx.pathname,
                 query: ctx.query,
               },
-            }
+            },
           );
         } catch (error) {
           // Prevent Apollo Client GraphQL errors from crashing SSR.
