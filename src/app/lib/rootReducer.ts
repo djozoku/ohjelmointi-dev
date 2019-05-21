@@ -11,7 +11,13 @@ const initialState = {
   text: 'sad',
 };
 
-const mainReducer = (state = initialState, action: Action) => {
+interface InitialState {
+  text: string;
+}
+
+type Reducer<T> = (state: T, action: Action) => {};
+
+const mainReducer: Reducer<InitialState> = (state = initialState, action) => {
   switch (action.type) {
     case 'HELLO':
       return {
@@ -30,4 +36,4 @@ const mainReducer = (state = initialState, action: Action) => {
   }
 };
 
-export default combineReducers({ mainReducer });
+export default combineReducers<any>({ mainReducer });
