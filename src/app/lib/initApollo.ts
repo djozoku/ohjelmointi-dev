@@ -3,7 +3,7 @@ import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { SchemaLink } from 'apollo-link-schema';
 import fetch from 'isomorphic-unfetch';
-import { schema } from '../../shared/schema';
+import { createSchema } from '../../shared/schema';
 import { isBrowser } from './isBrowser';
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
@@ -13,7 +13,8 @@ if (!isBrowser) {
   (global as any).fetch = fetch;
 }
 
-function create(initialState): ApolloClient<NormalizedCacheObject> {
+function create(initialState, firebase): ApolloClient<NormalizedCacheObject> {
+  const schema = createSchema(firebase);
   return new ApolloClient({
     cache: new InMemoryCache().restore(initialState),
     connectToDevTools: isBrowser,
@@ -27,16 +28,16 @@ function create(initialState): ApolloClient<NormalizedCacheObject> {
   });
 }
 
-export default function initApollo(initialState = {}) {
+export default function initApollo(initialState = {}, firebase) {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (!isBrowser) {
-    return create(initialState);
+    return create(initialState, firebase);
   }
 
   // Reuse client on the client-side
   if (!apolloClient) {
-    apolloClient = create(initialState);
+    apolloClient = create(initialState, firebase);
   }
 
   return apolloClient;
