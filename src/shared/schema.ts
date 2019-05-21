@@ -1,4 +1,5 @@
 import { makeExecutableSchema } from 'graphql-tools';
+import admin from 'firebase-admin';
 
 const typeDefs = [
   `
@@ -11,13 +12,16 @@ schema {
 }`,
 ];
 
-const resolvers = {
-  Query: {
-    hello() {
-      return 'world';
+export function createSchema(firebase: admin.app.App) {
+  const resolvers = {
+    Query: {
+      hello() {
+        return 'world';
+      },
     },
-  },
-};
+  };
 
-// TODO: refactor to function so we can get firebase sdk here
-export const schema = makeExecutableSchema({ typeDefs, resolvers });
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
+
+  return schema;
+}

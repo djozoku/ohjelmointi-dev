@@ -3,7 +3,7 @@ import express from 'express';
 import admin from 'firebase-admin';
 import { IncomingMessage, ServerResponse } from 'http';
 import next from 'next';
-import { schema } from '../shared/schema';
+import { createSchema } from '../shared/schema';
 
 export async function createServer(
   req: express.Request | IncomingMessage,
@@ -15,6 +15,7 @@ export async function createServer(
   const handle = app.getRequestHandler();
   await app.prepare();
   const server = express();
+  const schema = createSchema(firebase);
   // TODO: inject firebase admin to next.js
   const apolloServer = new ApolloServer({ schema });
   apolloServer.applyMiddleware({ app: server });
