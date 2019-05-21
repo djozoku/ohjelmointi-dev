@@ -16,9 +16,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "noEmit": true,
-    "lib": ["es6", "dom", "es2016", "esnext.asynciterable"],
-    "baseUrl": ".",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "lib": ["es6", "dom", "es2016"],
+    "baseUrl": "."
   }
 }
