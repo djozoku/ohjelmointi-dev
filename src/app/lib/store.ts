@@ -1,3 +1,5 @@
+import { NormalizedCacheObject } from 'apollo-cache-inmemory';
+import ApolloClient from 'apollo-client';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
@@ -10,15 +12,9 @@ const bindMiddleware = (middleware) => {
   return applyMiddleware(...middleware);
 };
 
-function service() {
-  return {
-    hello() {
-      return 'hello';
-    },
-  };
-}
-
-function configureStore(initialState) {
+const configureStore = (apollo: ApolloClient<NormalizedCacheObject>) => (
+  initialState,
+) => {
   const store = createStore(
     rootReducer,
     initialState,
@@ -26,6 +22,6 @@ function configureStore(initialState) {
   );
 
   return store;
-}
+};
 
 export default configureStore;

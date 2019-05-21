@@ -1,6 +1,7 @@
 import CssBaseLine from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import withReduxSaga from 'next-redux-saga';
+import { NormalizedCacheObject } from 'apollo-cache-inmemory';
+import ApolloClient from 'apollo-client';
 import withRedux from 'next-redux-wrapper';
 import App, { Container } from 'next/app';
 import Head from 'next/head';
@@ -8,6 +9,7 @@ import React from 'react';
 import JssProvider from 'react-jss/lib/JssProvider';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Store } from 'redux';
+import initApollo from '../lib/initApollo';
 import createStore from '../lib/store';
 import withMaterialUI, { MuiContext } from '../lib/withMaterialUI';
 
@@ -24,9 +26,11 @@ class TheApp extends App<TheAppProps> {
     return { pageProps };
   }
   public muiContext: MuiContext;
+  public apolloClient: ApolloClient<NormalizedCacheObject>;
   constructor(props) {
     super(props);
     this.muiContext = withMaterialUI();
+    this.apolloClient = initApollo();
   }
   public componentDidMount() {
     const jssStyles = document.getElementById('jss-server-side');
@@ -62,4 +66,4 @@ class TheApp extends App<TheAppProps> {
   }
 }
 
-export default withRedux(createStore)(withReduxSaga(TheApp));
+export default withRedux(createStore(this.apolloClient))(TheApp);
