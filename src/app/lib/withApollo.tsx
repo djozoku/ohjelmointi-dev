@@ -1,3 +1,4 @@
+// TODO: Use this file
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-client';
 import Head from 'next/head';

@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
+// TODO: change file location back to this folder
 import { accountCredential } from '../shared/credentials/server';
 import * as Application from './server';
 

@@ -15,6 +15,7 @@ export async function createServer(
   const handle = app.getRequestHandler();
   await app.prepare();
   const server = express();
+  // TODO: inject firebase admin to next.js
   const apolloServer = new ApolloServer({ schema });
   apolloServer.applyMiddleware({ app: server });
   server.get('*', (request, response) => {

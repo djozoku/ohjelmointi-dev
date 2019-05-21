@@ -19,4 +19,5 @@ const resolvers = {
   },
 };
 
+// TODO: refactor to function so we can get firebase sdk here
 export const schema = makeExecutableSchema({ typeDefs, resolvers });
