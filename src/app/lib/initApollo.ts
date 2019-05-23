@@ -1,31 +1,30 @@
+import { createSchema } from '@ohjelmointi-dev/shared';
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { SchemaLink } from 'apollo-link-schema';
-import fetch from 'isomorphic-unfetch';
-import { createSchema } from '../../shared/schema';
 import { isBrowser } from './isBrowser';
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
-// Polyfill fetch() on the server (used by apollo-client)
-if (!isBrowser) {
-  (global as any).fetch = fetch;
-}
-
 function create(initialState, firebase): ApolloClient<NormalizedCacheObject> {
-  const schema = createSchema(firebase);
-  return new ApolloClient({
-    cache: new InMemoryCache().restore(initialState),
-    connectToDevTools: isBrowser,
-    link: isBrowser
-      ? new HttpLink({
-          credentials: 'same-origin',
-          uri: 'http://localhost:5000/graphql',
-        })
-      : new SchemaLink({ schema }),
-    ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
-  });
+  if (!isBrowser) {
+    const schema = createSchema(firebase);
+    return new ApolloClient({
+      cache: new InMemoryCache().restore(initialState),
+      connectToDevTools: false,
+      link: new SchemaLink({ schema }),
+      ssrMode: true, // Disables forceFetch on the server (so queries are only run once)
+    });
+  } else {
+    return new ApolloClient({
+      cache: new InMemoryCache().restore(initialState),
+      link: new HttpLink({
+        credentials: 'same-origin',
+        uri: 'http://localhost:5000/graphql',
+      }),
+    });
+  }
 }
 
 export default function initApollo(initialState = {}, firebase) {

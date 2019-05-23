@@ -1,6 +1,7 @@
 // TODO: Use this file
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-client';
+import admin from 'firebase-admin';
 import Head from 'next/head';
 import React from 'react';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
@@ -14,11 +15,17 @@ function getComponentDisplayName(Component) {
 
 export default (ComposedComponent) => {
   return class WithApollo extends React.Component {
+    public static firebase: admin.app.App;
+
     public static displayName = `WithApollo(${getComponentDisplayName(
       ComposedComponent,
     )})`;
 
     public static async getInitialProps(ctx) {
+      if (ctx.req && ctx.req.query && ctx.req.query._firebase) {
+        this.firebase = ctx.req.query._firebase;
+      }
+
       // Initial serverState with apollo (empty)
       let serverState = {
         apollo: {
@@ -35,7 +42,7 @@ export default (ComposedComponent) => {
       // Run all GraphQL queries in the component tree
       // and extract the resulting data
       if (!isBrowser) {
-        const apollo = initApollo();
+        const apollo = initApollo({}, WithApollo.firebase);
 
         try {
           // Run all GraphQL queries
@@ -77,7 +84,10 @@ export default (ComposedComponent) => {
 
     constructor(props) {
       super(props);
-      this.apollo = initApollo(props.serverState.apollo.data);
+      this.apollo = initApollo(
+        props.serverState.apollo.data,
+        WithApollo.firebase,
+      );
     }
 
     public render() {
