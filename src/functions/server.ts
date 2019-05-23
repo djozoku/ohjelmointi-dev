@@ -1,9 +1,9 @@
+import { createSchema } from '@ohjelmointi-dev/shared';
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import admin from 'firebase-admin';
 import { IncomingMessage, ServerResponse } from 'http';
 import next from 'next';
-import { createSchema } from '../shared/schema';
 
 export async function createServer(
   req: express.Request | IncomingMessage,
