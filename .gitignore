@@ -2,3 +2,5 @@ node_modules
 dist
 next
 src/functions/credentials
+
+src/shared/lib/
