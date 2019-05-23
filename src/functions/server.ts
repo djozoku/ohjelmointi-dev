@@ -2,11 +2,11 @@ import { createSchema } from '@ohjelmointi-dev/shared';
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import admin from 'firebase-admin';
-import { IncomingMessage, ServerResponse } from 'http';
+import { ServerResponse } from 'http';
 import next from 'next';
 
 export async function createServer(
-  req: express.Request | IncomingMessage,
+  req: express.Request,
   res: express.Response | ServerResponse,
   firebase: admin.app.App,
 ) {
@@ -16,8 +16,12 @@ export async function createServer(
   await app.prepare();
   const server = express();
   const schema = createSchema(firebase);
-  // TODO: inject firebase admin to next.js
   const apolloServer = new ApolloServer({ schema });
+  // pass firebase to serverside next.js
+  server.use((request, _, nextFunc) => {
+    request.query._firebase = firebase;
+    nextFunc();
+  });
   apolloServer.applyMiddleware({ app: server });
   server.get('*', (request, response) => {
     handle(request, response).catch((err) => {
